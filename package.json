@@ -1,0 +1,7 @@
+{
+  "name": "jupyterhub",
+  "version": "1.0.0",
+  "dependencies": {
+    "configurable-http-proxy": "1.3.0"
+  }
+}

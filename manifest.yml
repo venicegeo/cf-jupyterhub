@@ -1,0 +1,11 @@
+---
+applications:
+- name: jupyterhub
+  #buildpack: https://github.com/ddollar/heroku-buildpack-multi.git
+  buildpack: multi
+  #command: jupyterhub --ip 0.0.0.0  --no-ssl --port $HUBPORT
+  command: jupyterhub -f jupyterhub_config.py
+  env:
+    HUBPORT: 8080
+    APIPORT: 8081
+
