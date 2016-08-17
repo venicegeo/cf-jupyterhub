@@ -1,3 +1,5 @@
+import os
+
 # Configuration file for jupyterhub.
 
 #------------------------------------------------------------------------------
@@ -127,8 +129,18 @@ c.JupyterHub.confirm_no_ssl = True
 # c.JupyterHub.db_kwargs = {}
 
 # url for the database. e.g. `sqlite:///jupyterhub.sqlite`
-# c.JupyterHub.db_url = 'sqlite:///jupyterhub.sqlite'
-
+db_pass = os.getenv('DBPASS')
+db_host = os.getenv('DBHOST')
+db_port = os.getenv('DBPORT', '5432')
+db_user = os.getenv('DBUSER')
+db_name = os.getenv('DBNAME')
+c.JupyterHub.db_url = 'postgresql://{}:{}@{}:{}/{}'.format(
+    db_user,
+    db_pass,
+    db_host,
+    db_port,
+    db_name,
+)
 # log all database transactions. This has A LOT of output
 # c.JupyterHub.debug_db = False
 

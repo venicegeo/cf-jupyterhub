@@ -8,4 +8,10 @@ applications:
   env:
     HUBPORT: 8080
     APIPORT: 8081
+    DBHOST: 
+    DBUSER: jupyter
+    DBPASS: abc1234
+    DBPORT: 5432
+    DBNAME: jupyter_dev
+
 
