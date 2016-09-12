@@ -41,8 +41,19 @@ This package includes all of the required dependencies in a portable format.
 
 On installation of the package:
 - Source files are copied to the `/tmp` directory
-- Python3.4 is built and compiled and then installed in `/opt`
-- NodeJS and the node_modules are copied to `/opt`
-- A _hubadmin_ user is created on the system and given limited sudo privileges
+- Python3.4 is built and compiled and then installed in `/opt/gsjhub`
+- NodeJS and the node_modules are copied to `/opt/gsjhub`
+- A _gsjhub_ user is created on the system and given limited sudo privileges
+- A systemd service file is added to `/usr/lib/systemd/system/`
+- The Jupyterhub config file is added to `/etc/gsjhub`
+- A start script is added to `/opt/gsjhub`
+
+## Development
+Since the Geoint Service Jupyterhub uses LDAP, PostgreSQL, and Sudospawner, local
+development set up can be time-consuming.
+
+- Docker for LDAP
+- Docker for PostgreSQL
+- ???
 
 **STUB Not Complete**
