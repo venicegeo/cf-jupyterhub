@@ -1,4 +1,27 @@
 import os
+import ast
+c = get_config()
+
+# LDAP Authentication
+
+ldap_server_address = os.getenv('LDAPSERVERADDR')
+ldap_server_port = os.getenv('LDAPSERVERPORT')
+ldap_use_ssl = ast.literal_eval(os.getenv('LDAPSSL'))
+ldap_bind_templ = os.getenv('LDAPBINDTMPL')
+
+#c.JupyterHub.authenticator_class = 'ldapcreateusers.LocalLDAPCreateUsers'
+#c.LocalLDAPCreateUsers.server_address = '192.168.33.64'
+#c.LocalLDAPCreateUsers.server_port = 389
+#c.LocalLDAPCreateUsers.use_ssl = False
+#c.LocalLDAPCreateUsers.bind_dn_template = 'uid={username},dc=rbtcloud,dc=dev'
+#c.LocalLDAPCreateUsers.create_system_users = True
+
+c.JupyterHub.authenticator_class = 'ldapcreateusers.LocalLDAPCreateUsers'
+c.LocalLDAPCreateUsers.server_address = '{}'.format(ldap_server_address)
+c.LocalLDAPCreateUsers.server_port = int('{}'.format(ldap_server_port))
+c.LocalLDAPCreateUsers.use_ssl = ldap_use_ssl
+c.LocalLDAPCreateUsers.bind_dn_template = '{}'.format(ldap_bind_templ)
+c.LocalLDAPCreateUsers.create_system_users = True
 
 # Configuration file for jupyterhub.
 
@@ -50,6 +73,7 @@ import os
 # 
 # Users should be properly informed if this is enabled.
 # c.JupyterHub.admin_access = False
+#c.JupyterHub.admin_access = True 
 
 # DEPRECATED, use Authenticator.admin_users instead.
 # c.JupyterHub.admin_users = set()
@@ -161,6 +185,7 @@ c.JupyterHub.db_url = 'postgresql://{}:{}@{}:{}/{}'.format(
 
 # The ip for this process
 # c.JupyterHub.hub_ip = '127.0.0.1'
+c.JupyterHub.hub_ip = '0.0.0.0'
 
 # The port for this process
 # c.JupyterHub.hub_port = 8081
@@ -191,6 +216,7 @@ c.JupyterHub.port = 8080
 
 # The ip for the proxy API handlers
 # c.JupyterHub.proxy_api_ip = '127.0.0.1'
+c.JupyterHub.proxy_api_ip = '0.0.0.0'
 
 # The port for the proxy API handlers
 # c.JupyterHub.proxy_api_port = 0
@@ -216,6 +242,7 @@ c.JupyterHub.proxy_api_port = 8082
 # 
 # Should be a subclass of Spawner.
 # c.JupyterHub.spawner_class = 'jupyterhub.spawner.LocalProcessSpawner'
+c.JupyterHub.spawner_class='sudospawner.SudoSpawner'
 
 # Path to SSL certificate file for the public facing interface of the proxy
 # 
@@ -309,6 +336,7 @@ c.JupyterHub.proxy_api_port = 8082
 
 # The IP address (or hostname) the single-user server should listen on
 # c.Spawner.ip = '127.0.0.1'
+c.Spawner.ip = '0.0.0.0'
 
 # The notebook directory for the single-user server
 # 
@@ -374,6 +402,9 @@ c.JupyterHub.proxy_api_port = 8082
 # 
 # If unspecified, only the user that launches the server will be admin.
 # c.Authenticator.admin_users = set()
+#c.Authenticator.admin_users = {'bhosmer', 'admin', 'butthead'}
+c.Authenticator.admin_users = {'vagrant'}
+
 
 # Dictionary mapping authenticator usernames to JupyterHub users.
 # 
@@ -391,7 +422,9 @@ c.JupyterHub.proxy_api_port = 8082
 # 
 # Use this to restrict which users can login. If empty, allow any user to
 # attempt login.
-# c.Authenticator.whitelist = set()
+c.Authenticator.whitelist = set()
+#c.Authenticator.whitelist = {'bhosmer', 'admin', 'butthead'}
+#c.Authenticator.whitelist = {'vagrant', 'admin'}
 
 #------------------------------------------------------------------------------
 # LocalAuthenticator configuration
@@ -420,11 +453,11 @@ c.JupyterHub.proxy_api_port = 8082
 # adduser -q --gecos "" --home /customhome/river --disabled-password river
 # 
 # when the user 'river' is created.
-# c.LocalAuthenticator.add_user_cmd = []
+c.LocalAuthenticator.add_user_cmd = ['sudo', '/usr/sbin/useradd']
 
 # If a user is added that doesn't exist on the system, should I try to create
 # the system user?
-# c.LocalAuthenticator.create_system_users = False
+c.LocalAuthenticator.create_system_users = True
 
 # Automatically whitelist anyone in this group.
 # c.LocalAuthenticator.group_whitelist = set()
@@ -446,7 +479,8 @@ c.JupyterHub.proxy_api_port = 8082
 # It can be disabled with::
 # 
 #     c.PAMAuthenticator.open_sessions = False
-# c.PAMAuthenticator.open_sessions = True
+c.PAMAuthenticator.open_sessions = True
 
 # The PAM service to use for authentication.
-# c.PAMAuthenticator.service = 'login'
+c.PAMAuthenticator.service = 'login'
+
