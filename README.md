@@ -16,12 +16,13 @@ The build requires [FPM](https://github.com/jordansissel/fpm).
 > FPM helps you build packages quickly and easily (Packages like RPM and DEB formats).
 
 ### Installing FPM on the Build Machine
+*CentOS 7*:
 FPM can be installed as a Ruby Gem:
 
     # yum -y install ruby ruby-devel
     # gem install fpm
 
-### Using the Build Scrpt
+### Using the Build Script
 In the root of this directory is a `build.sh` script. Execute it like this:
 
     ./build rpm
@@ -33,8 +34,8 @@ or
 to build either an rpm or Debian package.
 
 ## About the Package
-Some Linux Systems use an older version of Python for internal management. 
-Some target systems also have no network capabilities. 
+Some Linux Systems use an older version of Python for internal management.
+Some target systems also have no network capabilities.
 
 This package includes all of the required dependencies in a portable format.
 
