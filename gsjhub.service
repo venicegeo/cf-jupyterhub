@@ -5,8 +5,8 @@ After=network.service
 [Service]
 User=gsjhub
 Group=gsjhub
-Environment=/opt/gsjhub/bin:$PATH
 ExecStart=/opt/gsjhub/bin/jupyterhub --config /etc/gsjhub/jupyterhub-ldap_config.py
+EnvironmentFile=/etc/gsjhub/gsjhub.env
 WorkingDirectory=/opt/gsjhub
 Restart=always
 
