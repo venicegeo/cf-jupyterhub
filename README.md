@@ -23,8 +23,11 @@ FPM can be installed as a Ruby Gem:
 
 ### Using the Build Scrpt
 In the root of this directory is a `build.sh` script. Execute it like this:
+
     ./build rpm
+
 or
+
     ./build deb
 
 to build either an rpm or Debian package.
