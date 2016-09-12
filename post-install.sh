@@ -22,15 +22,18 @@ bin/pip3.4 install --upgrade pip
 bin/pip3.4 install --upgrade
 bin/pip3.4 install --upgrade -r /tmp/requirements.txt
 
-# Clean up source files
-rm -rf /tmp/requirements.txt
-rm -rf /tmp/get-pip.py
-rm -rf /tmp/Python-3.4.5.tgz
+# Clean up source directory since FPM doesn't know about it and
+# can't remove it during the package process.
 rm -rf /tmp/Python-3.4.5
 
 # @TODO Create hubadmin user and give sudo
-# Add env variables for hubadmin
-# Maybe a start.sh script that is started from the systemd file?
 useradd -r -M gsjhub -s /sbin/nologin
 chown -R gsjhub:gsjhub {/opt/gsjhub,/etc/gsjhub}
 
+tee -a /etc/sudoers <<-'EOF'
+# --BEGIN gsjhub--#
+Cmnd_Alias JUPYTER_CMDS = /opt/gsjhub/bin/sudospawner, /sbin/useradd
+gsjhub ALL=(ALL) NOPASSWD:JUPYTER_CMDS
+# --END gsjhub--#
+EOF
+systemctl daemon-reload

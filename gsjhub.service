@@ -1,0 +1,14 @@
+[Unit]
+Description=Geoint Services Jupyterhub
+After=network.service
+
+[Service]
+User=gsjhub
+Group=gsjhub
+Environment=/opt/gsjhub/bin:$PATH
+ExecStart=/opt/gsjhub/bin/jupyterhub --config /etc/gsjhub/jupyterhub-ldap_config.py
+WorkingDirectory=/opt/gsjhub
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
