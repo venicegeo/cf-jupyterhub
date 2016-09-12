@@ -31,6 +31,6 @@ rm -rf /tmp/Python-3.4.5
 # @TODO Create hubadmin user and give sudo
 # Add env variables for hubadmin
 # Maybe a start.sh script that is started from the systemd file?
-useradd -R -M gsjhub -s /sbin/nologin
+useradd -r -M gsjhub -s /sbin/nologin
 chown -R gsjhub:gsjhub {/opt/gsjhub,/etc/gsjhub}
 

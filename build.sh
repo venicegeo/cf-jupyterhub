@@ -7,8 +7,9 @@ VERSION=0.1.0
 PKGTYPE=$1
 
 if [ -z "$PKGTYPE" ]; then
-  echo "Requires package type: [rpm,deb]: "
-  echo "$ ./build.sh [deb,rpm]"
+  echo -e "\033[0;31m Requires package type of deb or rpm:"
+  echo -e "$ ./build.sh [deb,rpm] \033[0m"
+  exit 1
 fi
 
 
@@ -56,6 +57,8 @@ echo "Adding jupyterhub config file..."
 cp jupyterhub-ldap_config.py $NAME/etc/$NAME
 echo "Adding systemd service file..."
 cp gsjhub.service $NAME/usr/lib/systemd/system
+echo "Adding startup script..."
+cp start.sh $NAME
 
 echo "Building the package..."
 
@@ -63,6 +66,8 @@ case "$PKGTYPE" in
 
 deb) echo "debian"
   # Do deb fpm thing
+  /usr/local/bin/fpm -s dir -t deb -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'zlib-devel' -d'openssl-devel' -d 'sqlite-devel' -d 'postgresql-devel' --replaces $NAME --description 'Geoint Services Jupyterhub' --provides 'gsjhub' -p ./
+
   ;;
 rpm) echo "rpm"
   /usr/local/bin/fpm -s dir -t rpm -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'zlib-devel' -d'openssl-devel' -d 'sqlite-devel' -d 'postgresql-devel' --replaces $NAME --description 'Geoint Services Jupyterhub' --provides 'gsjhub' -p ./
