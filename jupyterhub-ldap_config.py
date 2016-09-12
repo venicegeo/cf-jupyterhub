@@ -453,7 +453,7 @@ c.Authenticator.whitelist = set()
 # adduser -q --gecos "" --home /customhome/river --disabled-password river
 # 
 # when the user 'river' is created.
-c.LocalAuthenticator.add_user_cmd = ['sudo', '/usr/sbin/useradd']
+c.LocalAuthenticator.add_user_cmd = ['/bin/sudo', '/sbin/useradd']
 
 # If a user is added that doesn't exist on the system, should I try to create
 # the system user?
