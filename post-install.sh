@@ -28,7 +28,7 @@ rm -rf /tmp/Python-3.4.5
 
 # @TODO Create hubadmin user and give sudo
 useradd -r -M gsjhub -s /sbin/nologin
-chown -R gsjhub:gsjhub {/opt/gsjhub,/etc/gsjhub}
+chown -R gsjhub:gsjhub {/opt/gsjhub,/etc/gsjhub,/var/run/gsjhub}
 
 tee -a /etc/sudoers <<-'EOF'
 # --BEGIN gsjhub--#

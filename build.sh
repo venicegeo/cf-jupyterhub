@@ -33,6 +33,7 @@ echo "Creating source directories..."
 mkdir -p $NAME/opt/$NAME/{bin,include,lib}
 mkdir -p $NAME/etc/{systemd/system,$NAME}
 mkdir -p $NAME/tmp
+mkdir -p $NAME/var/run/gsjhub
 
 # ADD the Python Source and Pip Install for portability to non-network systems
 echo "Downloading Python and Pip..."
@@ -53,7 +54,7 @@ echo "Installing node modules..."
 $NAME/opt/$NAME/bin/npm install configurable-http-proxy -g --prefix $NAME/opt/$NAME
 
 echo "Adding jupyterhub config file..."
-cp jupyterhub-ldap_config.py $NAME/etc/$NAME
+cp jupyterhub_config.py $NAME/etc/$NAME
 echo "Adding systemd service file..."
 cp gsjhub.service $NAME/etc/systemd/system
 
