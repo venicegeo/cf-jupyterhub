@@ -61,17 +61,16 @@ echo "Building the package..."
 
 case "$PKGTYPE" in
 
-deb) echo "debian"
-  # Do deb fpm thing
-  # @TODO this probably wont work right now track down debian deps for 
-  # building python from source
-  /usr/local/bin/fpm -s dir -t deb -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'zlib-devel' -d'openssl-devel' -d 'sqlite-devel' -d 'postgresql-devel' --replaces $NAME --description 'Geoint Services Jupyterhub' --provides 'gsjhub' -p ./
-
+# Build a deb package
+deb) echo "Debian package selected..."
+  /usr/local/bin/fpm -s dir -t deb -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'zlib1g-dev' -d 'libssl-dev' -d 'libsqlite3-dev' -d 'gcc' -d 'make' -d 'libpq-dev' --replaces $NAME-$VERSION --description 'Geoint Services Jupyterhub' --provides 'gsjhub' -p ./
   ;;
-rpm) echo "rpm"
+# Build an rpm package
+rpm) echo "RPM package selected..."
   /usr/local/bin/fpm -s dir -t rpm -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'zlib-devel' -d'openssl-devel' -d 'sqlite-devel' -d 'postgresql-devel' --replaces $NAME --description 'Geoint Services Jupyterhub' --provides 'gsjhub' -p ./
   ;;
 esac
 
+#rm -rf $NAME
 echo "Build complete!"
 
