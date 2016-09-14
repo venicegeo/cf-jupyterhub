@@ -5,8 +5,8 @@ After=network.service
 [Service]
 User=gsjhub
 Group=gsjhub
-ExecStart=/opt/gsjhub/bin/jupyterhub --config /etc/gsjhub/jupyterhub_config.py
-Environment=PATH=/opt/gsjhub/bin:$PATH
+ExecStart=/usr/bin/jupyterhub -f /etc/gsjhub/jupyterhub_config.py
+#Environment=PATH=/opt/gsjhub/bin:$PATH
 WorkingDirectory=/var/run/gsjhub
 Restart=always
 

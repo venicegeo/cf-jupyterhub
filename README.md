@@ -49,10 +49,32 @@ On installation of the package:
 - A start script is added to `/opt/gsjhub`
 
 ## Development
-Since the Geoint Service Jupyterhub uses LDAP, PostgreSQL, and Sudospawner, local
-development set up can be time-consuming.
+Since the Geoint Services Jupyterhub uses LDAP, PostgreSQL, and Sudospawner, local
+development requires these services to emulate the production settings.
 
-- Docker for LDAP
+### Local LDAP
+The simplest way to get an LDAP server for testing gsjhub is using a docker
+container.
+
+[https://github.com/osixia/docker-phpLDAPadmin](https://github.com/osixia/docker-phpLDAPadmin)
+provides an 'all-in-one' solution. Here's the sample script to get up and going quickly:
+
+    #!/bin/bash -e
+        docker run -e LDAP_TLS=false --name ldap-service --hostname ldap-service --detach osixia/openldap:1.1.1
+    
+            docker run --name phpldapadmin-service --hostname phpldapadmin-service --link ldap-service:ldap-host --env PHPLDAPADMIN_LDAP_HOSTS=ldap-host --detach osixia/phpldapadmin:0.6.11
+    
+                PHPLDAP_IP=$(docker inspect -f "{{ .NetworkSettings.IPAddress }}" phpldapadmin-service)
+    
+                echo "Go to: https://$PHPLDAP_IP"
+                echo "Login DN: cn=admin,dc=example,dc=org"
+                echo "Password: admin"
+
+### Local PostgreSQL
+Using docker again you can have a quick PostgreSQL server up and running for testing:
+
+    #!/bin/bash -e
+        docker run -e POSTGRES_PASSWORD=abc1234 -e POSTGRES_USER=jupyterhub -e POSTGRES_DB=jupyterhub -P postgres:latest
 - Docker for PostgreSQL
 - ???
 
