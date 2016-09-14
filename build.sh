@@ -37,6 +37,7 @@ echo "Creating source directories..."
 mkdir -p $NAME/etc/{systemd/system,$NAME}
 mkdir -p $NAME/tmp
 mkdir -p $NAME/var/run/gsjhub
+mkdir -p $NAME/usr/share/doc/$NAME-$VERSION
 
 # ADD the Pip Installer for portability to non-network systems
 echo "Downloading Pip..."
@@ -53,9 +54,13 @@ mkdir gsjhub-modules
 popd
 
 echo "Adding jupyterhub config file..."
-cp jupyterhub_config.py $NAME/etc/$NAME
+cp jupyterhub_config-default.py $NAME/etc/$NAME/jupyterhub_config.py
 echo "Adding systemd service file..."
 cp gsjhub.service $NAME/etc/systemd/system
+
+echo "Adding docs to /usr/share/doc..."
+cp README.md $NAME/usr/share/doc/$NAME-$VERSION/README
+cp jupyterhub-ldap_config.py $NAME/usr/share/doc/$NAME-$VERSION/hub-ldap-config-example
 
 echo "Building the package..."
 

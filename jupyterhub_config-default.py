@@ -1,28 +1,3 @@
-import os
-import ast
-c = get_config()
-
-# LDAP Authentication
-
-ldap_server_address = os.getenv('LDAPSERVERADDR')
-ldap_server_port = os.getenv('LDAPSERVERPORT')
-ldap_use_ssl = ast.literal_eval(os.getenv('LDAPSSL'))
-ldap_bind_templ = os.getenv('LDAPBINDTMPL')
-
-#c.JupyterHub.authenticator_class = 'ldapcreateusers.LocalLDAPCreateUsers'
-#c.LocalLDAPCreateUsers.server_address = '192.168.33.64'
-#c.LocalLDAPCreateUsers.server_port = 389
-#c.LocalLDAPCreateUsers.use_ssl = False
-#c.LocalLDAPCreateUsers.bind_dn_template = 'uid={username},dc=rbtcloud,dc=dev'
-#c.LocalLDAPCreateUsers.create_system_users = True
-
-c.JupyterHub.authenticator_class = 'ldapcreateusers.LocalLDAPCreateUsers'
-c.LocalLDAPCreateUsers.server_address = '{}'.format(ldap_server_address)
-c.LocalLDAPCreateUsers.server_port = int('{}'.format(ldap_server_port))
-c.LocalLDAPCreateUsers.use_ssl = ldap_use_ssl
-c.LocalLDAPCreateUsers.bind_dn_template = '{}'.format(ldap_bind_templ)
-c.LocalLDAPCreateUsers.create_system_users = True
-
 # Configuration file for jupyterhub.
 
 #------------------------------------------------------------------------------
@@ -73,7 +48,6 @@ c.LocalLDAPCreateUsers.create_system_users = True
 # 
 # Users should be properly informed if this is enabled.
 # c.JupyterHub.admin_access = False
-#c.JupyterHub.admin_access = True 
 
 # DEPRECATED, use Authenticator.admin_users instead.
 # c.JupyterHub.admin_users = set()
@@ -132,7 +106,6 @@ c.LocalLDAPCreateUsers.create_system_users = True
 # Confirm that JupyterHub should be run without SSL. This is **NOT RECOMMENDED**
 # unless SSL termination is being handled by another layer.
 # c.JupyterHub.confirm_no_ssl = False
-c.JupyterHub.confirm_no_ssl = True
 
 # Number of days for a login cookie to be valid. Default is two weeks.
 # c.JupyterHub.cookie_max_age_days = 14
@@ -146,25 +119,15 @@ c.JupyterHub.confirm_no_ssl = True
 # c.JupyterHub.cookie_secret_file = 'jupyterhub_cookie_secret'
 
 # The location of jupyterhub data files (e.g. /usr/local/share/jupyter/hub)
-# c.JupyterHub.data_files_path = '/home/vagrant/.virtualenvs/jupyter/share/jupyter/hub'
+# c.JupyterHub.data_files_path = '/usr/share/jupyter/hub'
 
 # Include any kwargs to pass to the database connection. See
 # sqlalchemy.create_engine for details.
 # c.JupyterHub.db_kwargs = {}
 
 # url for the database. e.g. `sqlite:///jupyterhub.sqlite`
-db_pass = os.getenv('DBPASS')
-db_host = os.getenv('DBHOST')
-db_port = os.getenv('DBPORT', '5432')
-db_user = os.getenv('DBUSER')
-db_name = os.getenv('DBNAME')
-c.JupyterHub.db_url = 'postgresql://{}:{}@{}:{}/{}'.format(
-    db_user,
-    db_pass,
-    db_host,
-    db_port,
-    db_name,
-)
+# c.JupyterHub.db_url = 'sqlite:///jupyterhub.sqlite'
+
 # log all database transactions. This has A LOT of output
 # c.JupyterHub.debug_db = False
 
@@ -185,18 +148,15 @@ c.JupyterHub.db_url = 'postgresql://{}:{}@{}:{}/{}'.format(
 
 # The ip for this process
 # c.JupyterHub.hub_ip = '127.0.0.1'
-c.JupyterHub.hub_ip = '0.0.0.0'
 
 # The port for this process
 # c.JupyterHub.hub_port = 8081
-c.JupyterHub.hub_port = 8081
 
 # The prefix for the hub server. Must not be '/'
 # c.JupyterHub.hub_prefix = '/hub/'
 
 # The public facing ip of the whole application (the proxy)
 # c.JupyterHub.ip = ''
-c.JupyterHub.ip = '0.0.0.0'
 
 # Supply extra arguments that will be passed to Jinja environment.
 # c.JupyterHub.jinja_environment_options = {}
@@ -212,15 +172,12 @@ c.JupyterHub.ip = '0.0.0.0'
 
 # The public facing port of the proxy
 # c.JupyterHub.port = 8000
-c.JupyterHub.port = 8080
 
 # The ip for the proxy API handlers
 # c.JupyterHub.proxy_api_ip = '127.0.0.1'
-c.JupyterHub.proxy_api_ip = '0.0.0.0'
 
 # The port for the proxy API handlers
 # c.JupyterHub.proxy_api_port = 0
-c.JupyterHub.proxy_api_port = 8082
 
 # The Proxy Auth token.
 # 
@@ -242,7 +199,6 @@ c.JupyterHub.proxy_api_port = 8082
 # 
 # Should be a subclass of Spawner.
 # c.JupyterHub.spawner_class = 'jupyterhub.spawner.LocalProcessSpawner'
-c.JupyterHub.spawner_class='sudospawner.SudoSpawner'
 
 # Path to SSL certificate file for the public facing interface of the proxy
 # 
@@ -336,7 +292,6 @@ c.JupyterHub.spawner_class='sudospawner.SudoSpawner'
 
 # The IP address (or hostname) the single-user server should listen on
 # c.Spawner.ip = '127.0.0.1'
-c.Spawner.ip = '0.0.0.0'
 
 # The notebook directory for the single-user server
 # 
@@ -402,9 +357,6 @@ c.Spawner.ip = '0.0.0.0'
 # 
 # If unspecified, only the user that launches the server will be admin.
 # c.Authenticator.admin_users = set()
-#c.Authenticator.admin_users = {'bhosmer', 'admin', 'butthead'}
-c.Authenticator.admin_users = {'vagrant'}
-
 
 # Dictionary mapping authenticator usernames to JupyterHub users.
 # 
@@ -422,9 +374,7 @@ c.Authenticator.admin_users = {'vagrant'}
 # 
 # Use this to restrict which users can login. If empty, allow any user to
 # attempt login.
-c.Authenticator.whitelist = set()
-#c.Authenticator.whitelist = {'bhosmer', 'admin', 'butthead'}
-#c.Authenticator.whitelist = {'vagrant', 'admin'}
+# c.Authenticator.whitelist = set()
 
 #------------------------------------------------------------------------------
 # LocalAuthenticator configuration
@@ -453,11 +403,11 @@ c.Authenticator.whitelist = set()
 # adduser -q --gecos "" --home /customhome/river --disabled-password river
 # 
 # when the user 'river' is created.
-c.LocalAuthenticator.add_user_cmd = ['sudo', '/usr/sbin/useradd']
+# c.LocalAuthenticator.add_user_cmd = []
 
 # If a user is added that doesn't exist on the system, should I try to create
 # the system user?
-c.LocalAuthenticator.create_system_users = True
+# c.LocalAuthenticator.create_system_users = False
 
 # Automatically whitelist anyone in this group.
 # c.LocalAuthenticator.group_whitelist = set()
@@ -479,8 +429,7 @@ c.LocalAuthenticator.create_system_users = True
 # It can be disabled with::
 # 
 #     c.PAMAuthenticator.open_sessions = False
-c.PAMAuthenticator.open_sessions = True
+# c.PAMAuthenticator.open_sessions = True
 
 # The PAM service to use for authentication.
-c.PAMAuthenticator.service = 'login'
-
+# c.PAMAuthenticator.service = 'login'
