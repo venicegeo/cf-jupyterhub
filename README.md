@@ -37,16 +37,34 @@ to build either an rpm or Debian package.
 Some Linux Systems use an older version of Python for internal management.
 Some target systems also have no network capabilities.
 
-This package includes all of the required dependencies in a portable format.
+This package relies on a few dependencies, available within the operating
+system's standard repositories.
+
+### RHEL/CentOS
+- *epel-release* is required prior to installation of the gsjhub.rpm
+
+Install it with `# yum -y install epel-release`
+
+The rpm installation takes care of the rest of the dependencies. Here is what
+gets installed along with the gsjhub RPM:
+
+- zlib-devel
+- postgresql-devel
+- libsqlite-devel
+- gcc
+- nodejs
+- npm
+- openssl-devel
+- python34
+- pip3.4 
 
 On installation of the package:
-- Source files are copied to the `/tmp` directory
-- Python3.4 is built and compiled and then installed in `/opt/gsjhub`
-- NodeJS and the node_modules are copied to `/opt/gsjhub`
-- A _gsjhub_ user is created on the system and given limited sudo privileges
-- A systemd service file is added to `/usr/lib/systemd/system/`
-- The Jupyterhub config file is added to `/etc/gsjhub`
-- A start script is added to `/opt/gsjhub`
+1. The dependent packages above are installed
+2. Source files are copied to the `/tmp` directory
+3. The required node and python modules are installed from the RPM
+4. A _gsjhub_ user is created on the system and given limited sudo privileges (only useradd and sudospawner are granted)
+5. A systemd service file is added to `/usr/lib/systemd/system/`
+6. The Jupyterhub config file is added to `/etc/gsjhub`
 
 ## Development
 Since the Geoint Services Jupyterhub uses LDAP, PostgreSQL, and Sudospawner, local
