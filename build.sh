@@ -69,15 +69,17 @@ case "$PKGTYPE" in
 # Build a deb package
 deb)
   echo "Building deb..."
-  /usr/local/bin/fpm -s dir -t deb -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'zlib1g-dev' -d 'libssl-dev' -d 'libsqlite3-dev' -d 'gcc' -d 'make' -d 'libpq-dev' --replaces $NAME-$VERSION --description 'Geoint Services Jupyterhub' --provides 'gsjhub' -p ./
+  /usr/local/bin/fpm -s dir -t deb -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'zlib1g-dev' -d 'libssl-dev' -d 'libsqlite3-dev' -d 'gcc' -d 'make' -d 'libpq-dev' --replaces $NAME-$VERSION --description 'Geoint Services Jupyterhub' --provides 'gsjhub' --url 'https://github.com/venicegeo/gs-jupyterhub' -p ./
+  EXITCODE=$?
   ;;
 # Build an rpm package
 rpm) 
   echo "Building rpm..."
-  /usr/local/bin/fpm -s dir -t rpm -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'epel-release' -d 'python34' -d 'python34-devel' -d 'gcc' -d 'nodejs' -d 'npm' -d 'zlib-devel' -d'openssl-devel' -d 'sqlite-devel' -d 'postgresql-devel' --replaces $NAME --description 'Geoint Services Jupyterhub' --provides 'gsjhub' -p ./
+  /usr/local/bin/fpm -s dir -t rpm -n $NAME -v $VERSION -C $NAME --after-install post-install.sh --after-remove post-remove.sh --before-install before-install.sh -d 'epel-release' -d 'python34' -d 'python34-devel' -d 'gcc' -d 'nodejs' -d 'npm' -d 'zlib-devel' -d'openssl-devel' -d 'sqlite-devel' -d 'postgresql-devel' --replaces $NAME --description 'Geoint Services Jupyterhub' --provides 'gsjhub' --url 'https://github.com/venicegeo/gs-jupyterhub' -p ./
+  EXITCODE=$?
   ;;
 esac
 
-#rm -rf $NAME
+rm -rf $NAME
 echo "Build complete!"
-
+exit $EXITCODE
