@@ -58,13 +58,17 @@ gets installed along with the gsjhub RPM:
 - python34
 - pip3.4 
 
-On installation of the package:
+On installation of the package rpm:
+
 1. The dependent packages above are installed
 2. Source files are copied to the `/tmp` directory
 3. The required node and python modules are installed from the RPM
 4. A _gsjhub_ user is created on the system and given limited sudo privileges (only useradd and sudospawner are granted)
 5. A systemd service file is added to `/usr/lib/systemd/system/`
 6. The Jupyterhub config file is added to `/etc/gsjhub`
+
+### Debian/Ubuntu
+**Add Something Here!**
 
 ## Development
 Since the Geoint Services Jupyterhub uses LDAP, PostgreSQL, and Sudospawner, local
