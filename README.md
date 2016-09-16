@@ -236,6 +236,7 @@ Now start the service:
 Verify the service started:
 
 `# systemctl status gsjhub`
+
     ...
     ● gsjhub.service - Geoint Services Jupyterhub
        Loaded: loaded (/etc/systemd/system/gsjhub.service; disabled; vendor preset: disabled)
