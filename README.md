@@ -90,6 +90,62 @@ if they don't already exist.
 
 You can also find this sample config in `/usr/share/doc/gsjhub-$VERSION`.
 
+### Behind a Proxy that has SSL Already
+
+```
+c.JupyterHub.confirm_no_ssl = True
+```
+
+### LDAP Authentication using [ldapauthenticator](https://github.com/jupyterhub/ldapauthenticator)
+
+```
+c.JupyterHub.authenticator_class = 'ldapauthenticator.LDAPAuthenticator'
+c.LDAPAuthenticator.server_address = '192.168.22.100'
+c.LDAPAuthenticator.server_port = 389
+c.LDAPAuthenticator.use_ssl = False
+c.LDAPAuthenticator.bind_dn_template = 'uid={username},ou=people,dc=wikimedia,dc=org'
+```
+
+### LDAP Authentication _and_ Creation of System Users with SSL
+
+```
+c.JupyterHub.authenticator_class = 'ldapcreateusers.LocalLDAPCreateUsers'
+c.LocalLDAPCreateUsers.server_address = '192.168.33.64'
+c.LocalLDAPCreateUsers.server_port = 634
+c.LocalLDAPCreateUsers.use_ssl = True
+c.LocalLDAPCreateUsers.bind_dn_template = 'uid={username},dc=geointservices,dc=io'
+c.LocalLDAPCreateUsers.create_system_users = True
+```
+
+### PostgreSQL Configuration
+
+```
+# url for the database. e.g. `sqlite:///jupyterhub.sqlite`
+db_pass = 'secretpassword'
+db_host = 'yourdb.com'
+db_port = '5432'
+db_user = 'dbusername'
+db_name = 'dbname'
+c.JupyterHub.db_url = 'postgresql://{}:{}@{}:{}/{}'.format(
+    db_user,
+    db_pass,
+    db_host,
+    db_port,
+    db_name,
+)
+```
+
+### With [sudospawner](https://github.com/jupyterhub/sudospawner)
+
+```
+c.JupyterHub.spawner_class='sudospawner.SudoSpawner'
+c.LocalAuthenticator.add_user_cmd = ['sudo', '/usr/sbin/useradd']
+
+# If a user is added that doesn't exist on the system, should I try to create
+# the system user?
+c.LocalAuthenticator.create_system_users = True
+```
+
 ## Development
 Since the Geoint Services Jupyterhub uses LDAP, PostgreSQL, and Sudospawner, local
 development requires these services to emulate the production settings.
