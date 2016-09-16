@@ -108,6 +108,8 @@ c.LDAPAuthenticator.bind_dn_template = 'uid={username},ou=people,dc=wikimedia,dc
 
 ### LDAP Authentication _and_ Creation of System Users with SSL
 
+This option utilizes the [jupyterhub-ldapcreateusers](https://pypi.python.org/pypi?%3Aaction=pkg_edit&name=jupyterhub-ldapcreateusers) module.
+
 ```
 c.JupyterHub.authenticator_class = 'ldapcreateusers.LocalLDAPCreateUsers'
 c.LocalLDAPCreateUsers.server_address = '192.168.33.64'
@@ -139,14 +141,36 @@ c.JupyterHub.db_url = 'postgresql://{}:{}@{}:{}/{}'.format(
 
 ```
 c.JupyterHub.spawner_class='sudospawner.SudoSpawner'
-c.LocalAuthenticator.add_user_cmd = ['sudo', '/usr/sbin/useradd']
+c.LocalAuthenticator.add_user_cmd = ['/usr/bin/sudo', '/usr/sbin/useradd']
 
 # If a user is added that doesn't exist on the system, should I try to create
 # the system user?
 c.LocalAuthenticator.create_system_users = True
+c.PAMAuthenticator.open_sessions = True
+c.PAMAuthenticator.service = 'login
 ```
 
-## Development
+### Whitelist and Admin User(s)
+Without setting an _admin_ user, no one will be able to administer the
+jupyterhub. You likely will want at least one user:
+
+```
+c.Authenticator.admin_users = {'mjones'}
+```
+
+You can also _whitelist_ users to allow allow them to login:
+
+```
+c.Authenticator.whitelist = {'jsmith', 'epickle'}
+```
+
+To allow _any_ authenticated users:
+
+```
+c.Authenticator.whitelist = set()
+```
+
+## Local Development
 Since the Geoint Services Jupyterhub uses LDAP, PostgreSQL, and Sudospawner, local
 development requires these services to emulate the production settings.
 
