@@ -1,0 +1,2 @@
+APP=gsjhub
+EXT=rpm

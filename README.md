@@ -62,13 +62,33 @@ On installation of the package rpm:
 
 1. The dependent packages above are installed
 2. Source files are copied to the `/tmp` directory
-3. The required node and python modules are installed from the RPM
+3. The required node and python modules are installed from the RPM using the 
+system Python and Nodejs.
 4. A _gsjhub_ user is created on the system and given limited sudo privileges (only useradd and sudospawner are granted)
 5. A systemd service file is added to `/usr/lib/systemd/system/`
 6. The Jupyterhub config file is added to `/etc/gsjhub`
 
 ### Debian/Ubuntu
 **Add Something Here!**
+
+## Configuration after installation
+
+The _gsjhub_ package installs the default `jupyterhub_config.py` in `/etc/gsjhub`.
+Starting the `gsjhub` service without modifying the configuration file will fail
+since Jupyterhub will refuse to start without SSL enabled. 
+
+You should modify this configuration file to suit your particular environment.
+
+This example outlines configuration settings for:
+
+- LDAP Authentication.
+- Using [sudospawner](https://github.com/jupyterhub/sudospawner) so the service 
+doesn't need to run as root.
+- Using an external PostgreSQL Database for storage.
+- Allowing users authenticated through LDAP to have system accounts created
+if they don't already exist.
+
+You can also find this sample config in `/usr/share/doc/gsjhub-$VERSION`.
 
 ## Development
 Since the Geoint Services Jupyterhub uses LDAP, PostgreSQL, and Sudospawner, local
