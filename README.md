@@ -1,14 +1,19 @@
 # Geoint Service Jupyterhub
 
-[Jupyterhub](https://github.com/jupyterhub/jupyterhub) requires Python 3.3 or
-higher and NodeJS. This presents an issue when you attempt to run this app
-in cloudfoundry. Cloudfoundry only supports one buildpack per application. 
-You can run a python application or a node application, but not one that uses 
-both.
+
+[Jupyterhub](https://github.com/jupyterhub/jupyterhub) allows users to share,
+evaluate, and test code in self-contained browser-based environments.
+
+The Geoint Services _gsjhub_ project packages Jupyterhub along with 
+all the required dependencies in an easily installable package suitable
+for even non-networked systems. All dependencies not included in the package
+are available from upstream repositories available within the operating systems
+respective package manager.
 
 ## Target Requirements
-Jupyterhub requires NodeJS and Python3 along with quite a few Python packages
-available from pypi.
+Jupyterhub requires NodeJS, NPM,  Python3.4, Pip3.4 along with quite a few Python packages
+available from [pypi](https://pypi.org). The Node module, `configurable-http-proxy`
+is also required. The package installer takes care of all of this for you though.
 
 ## Building the Package
 The build requires [FPM](https://github.com/jordansissel/fpm).
@@ -21,6 +26,11 @@ FPM can be installed as a Ruby Gem:
 
     # yum -y install ruby ruby-devel
     # gem install fpm
+
+*Debian*:
+FPM can be installed as a Ruby Gem:
+    # aptitude install ruby ruby-dev gcc make
+    # gem install fpm 
 
 ### Using the Build Script
 In the root of this directory is a `build.sh` script. Execute it like this:
@@ -44,6 +54,7 @@ system's standard repositories.
 - *epel-release* is required prior to installation of the gsjhub.rpm
 
 Install it with `# yum -y install epel-release`
+and then install gsjhub: `# yum -y install gsjhub-xxx-x.x86_64.rpm`
 
 The rpm installation takes care of the rest of the dependencies. Here is what
 gets installed along with the gsjhub RPM:
@@ -69,7 +80,19 @@ system Python and Nodejs.
 6. The Jupyterhub config file is added to `/etc/gsjhub`
 
 ### Debian/Ubuntu
-**Add Something Here!**
+The following packages are required prior to installation of the gsjhub package:
+
+- python3.4
+- python3.4-dev
+- libssl-dev
+- libsqlite3-dev
+- libpq-dev
+- nodejs
+- npm
+
+Then install the gsjhub package `# dpkg -i gsjhub_x.x.x_amd64.deb`
+
+**Still needs work**
 
 ## Configuration after installation
 
@@ -197,7 +220,28 @@ Using docker again you can have a quick PostgreSQL server up and running for tes
 
     #!/bin/bash -e
         docker run -e POSTGRES_PASSWORD=abc1234 -e POSTGRES_USER=jupyterhub -e POSTGRES_DB=jupyterhub -P postgres:latest
-- Docker for PostgreSQL
-- ???
 
-**STUB Not Complete**
+### Enabling and Starting the _gsjhub_ service
+After editing the configuration file located in `/etc/gsjhub/jupterhub_config.py` 
+you're now ready to start the service.
+
+First, enable it to survive reboots:
+
+`# systemctl enable gsjhub`
+
+Now start the service:
+
+`# systemctl start gsjhub`
+
+Verify the service started:
+
+`# systemctl status gsjhub`
+    ...
+    ● gsjhub.service - Geoint Services Jupyterhub
+       Loaded: loaded (/etc/systemd/system/gsjhub.service; disabled; vendor preset: disabled)
+       Active: active (running) since Fri 2016-09-16 12:49:58 EDT; 6s ago
+     Main PID: 19352 (jupyterhub)
+       CGroup: /system.slice/gsjhub.service
+               ├─19352 /usr/bin/python3 /usr/bin/jupyterhub -f /etc/gsjhub/jupyterhub_config.py
+               └─19356 node /usr/bin/configurable-http-proxy --ip 0.0.0.0 --port 8080 --api-ip 0.0.0.0 --a...
+
