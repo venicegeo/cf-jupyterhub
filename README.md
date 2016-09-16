@@ -81,12 +81,12 @@ You should modify this configuration file to suit your particular environment.
 
 This example outlines configuration settings for:
 
-- LDAP Authentication.
+- LDAP Authentication using [jupyterhub-ldapauthenticator](https://pypi.python.org/pypi/jupyterhub-ldapauthenticator/1.0).
 - Using [sudospawner](https://github.com/jupyterhub/sudospawner) so the service 
 doesn't need to run as root.
 - Using an external PostgreSQL Database for storage.
 - Allowing users authenticated through LDAP to have system accounts created
-if they don't already exist.
+if they don't already exist with [jupyterhub-ldapcreateusers](https://pypi.python.org/pypi/jupyterhub-ldapcreateusers).
 
 You can also find this sample config in `/usr/share/doc/gsjhub-$VERSION`.
 
