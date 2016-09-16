@@ -50,8 +50,7 @@ npm install --save configurable-http-proxy
 
 echo "Downloading python modules..."
 mkdir gsjhub-modules
-#/usr/bin/pip3.4 download -r ../tmp/requirements.txt -d gsjhub-modules
-pip3.4 download -r ../tmp/requirements.txt -d gsjhub-modules
+/usr/bin/pip3.4 download -r ../tmp/requirements.txt -d gsjhub-modules
 popd
 
 echo "Adding jupyterhub config file..."
